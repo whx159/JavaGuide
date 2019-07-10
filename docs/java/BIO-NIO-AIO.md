@@ -99,7 +99,9 @@ public class IOClient {
         Socket socket = new Socket("127.0.0.1", 3333);
         while (true) {
           try {
-            socket.getOutputStream().write((new Date() + ": hello world").getBytes());
+            OutputStream outputStream = socket.getOutputStream();
+            outputStream.write((new Date() + ": hello world").getBytes());
+            outputStream.close();
             Thread.sleep(2000);
           } catch (Exception e) {
           }
@@ -145,6 +147,7 @@ public class IOServer {
               while ((len = inputStream.read(data)) != -1) {
                 System.out.println(new String(data, 0, len));
               }
+              inputStream.close();
             } catch (IOException e) {
             }
           }).start();
